@@ -1,0 +1,46 @@
+// Initialise the text lists and OLED screen size
+let text_list: string[] = []
+let waitlist: string[] = []
+OLED.init(64, 128)
+// This is the compliment list of compliments
+text_list = ["You're a smart cookie.", "I bet you make people smile.", "We believe in your dreams.", "You are doing your best every day.", "The best is yet to come.", "You are unique.", "Inhale confidence, exhale doubt.", "You can change the world.", "You matter to us.", "Note to you: you're amazing.", "You are awesome.", "You are good enough right now, just like this."]
+
+// what happens when button B is pressed
+input.onButtonPressed(Button.B, function () {
+    if (text_list.length > 0) {
+        // if there are compliments in the list, show a
+        // compliment. Transfer used compliment to 'waitlist'.
+        waitlist.push(text_list[0])
+        OLED.showStringWithNewLine(text_list.shift())
+        basic.pause(10000)
+        OLED.clear()
+    } else {
+        // if there are no compliments in the list, shuffle
+        // used compliments in 'waitlist' and transfer them
+        // into compliment list.
+        shuffle(waitlist)
+        text_list = waitlist
+        waitlist = []
+        waitlist.push(text_list[0])
+        OLED.showStringWithNewLine(text_list.shift())
+        basic.pause(10000)
+        OLED.clear()
+    }
+})
+
+// This is how to shuffle the waitlist. Code uses
+// Fisher Yeats shuffle (feel free to Google it)
+function shuffle(array: Array<string>) {
+    let i: number
+    for (i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1))
+        let temp = array[i]
+        array[i] = array[j]
+        array[j] = temp
+    }
+
+    return array;
+}
+basic.forever(function () {
+	
+})
